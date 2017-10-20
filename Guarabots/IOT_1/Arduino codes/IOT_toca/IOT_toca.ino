@@ -13,6 +13,10 @@
 #include <Ethernet.h>
 String readString;
 
+#include <GuaraTeca_Hardware.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
 //Definimos os pinos dos componentes para controle IOT._______
 #define pino_rele1              2 
 #define pino_rele2              3   //PWM
@@ -31,24 +35,29 @@ String readString;
 #define pinoNaoUsado            A1  //Analog
 #define pinoNaoUsado            A2  //Analog
 #define pinoNaoUsado            A3  //Analog
-#define pinoNaoUsado            A4  //Analog
-#define pinoNaoUsado            A5  //Analog
+#define interfaceI2C            A4  //Analog
+#define interfaceI2C            A5  //Analog
 
 //Definimos as variantes de controle do termostato.___________
 #define debug 0
 
 //Criamos as variaveis do sistema.____________________________
-boolean ligado    = true;
-boolean ligado_2  = true;
+bool ligado           = true;
+bool ligado_2         = true;
+bool msgPersonalizada = false;
 
 //Informacoes de endereco IP, gateway, mascara de rede________
 byte mac    [] = { 0xA4, 0x28, 0x72, 0xCA, 0x55, 0x2F };
-byte ip     [] = { 192, 168, 0, 110 };
-byte gateway[] = { 192, 168, 0, 1 };
+byte ip     [] = { 192, 168, 1, 110 };
+byte gateway[] = { 192, 168, 1, 1 };
 byte subnet [] = { 255, 255, 255, 0 };
 
 //Criamos os objetos do sistema.______________________________
 EthernetServer server(80);
+LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+
+#define E_porta 0x68
+int leituraPorta[7];
 
 void setup() {
 #if debug == 1
@@ -70,6 +79,14 @@ void setup() {
   Serial.println("Guarabots - Automacao Residencial");
   Serial.println("Iniciado com sucesso!!!");
 #endif
+  lcd.begin (16, 2);
+  inicia_GY521_MPU6050(E_porta);
+
+  lcd.setBacklight(HIGH);
+  lcd.setCursor(3, 0);
+  lcd.print("GuaraBots");
+  lcd.setCursor(5, 1);
+  lcd.print("DNO");
 }
 
 void loop() {
@@ -111,6 +128,19 @@ void loop() {
               ligado_2 = true;
             }
           }
+
+          //Imprime msg na tela___________________________________
+          if (readString.indexOf("msg=") > 0) {
+            lcd.clear();
+            String reciveMensage;
+            int i = 10;
+            while(readString[i] != ' '){
+                reciveMensage += readString[i];
+                i++;
+            }
+            lcd.print(reciveMensage); 
+            msgPersonalizada = true;
+          }
           
           #if debug == 1
             Serial.println(readString);
@@ -146,5 +176,19 @@ void loop() {
         }
       }
     }
+  }
+
+
+  obtemDados_GY521_MPU6050(leituraPorta, E_porta);
+
+  if(!msgPersonalizada){
+    lcd.setBacklight(HIGH);
+    lcd.setCursor(3, 0);
+    lcd.print("GuaraBots");
+    lcd.setCursor(1, 1);
+  
+    lcd.print("temp: ");
+    lcd.print(leituraPorta[3] / 340.00 + 36.53);
+    lcd.print("C");
   }
 }
