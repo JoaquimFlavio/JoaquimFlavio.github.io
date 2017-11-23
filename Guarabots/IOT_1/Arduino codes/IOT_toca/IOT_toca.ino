@@ -9,13 +9,10 @@
 
 //Incluimos as bibliotecas necessarias._______________________
 #include <GuaraTeca_Hardware.h>
-#include <SPI.h>
-#include <Ethernet.h>
-String readString;
-
-#include <GuaraTeca_Hardware.h>
-#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <Ethernet.h>
+#include <Wire.h>
+#include <SPI.h>
 
 //Definimos os pinos dos componentes para controle IOT._______
 #define pino_rele1              2 
@@ -39,12 +36,16 @@ String readString;
 #define interfaceI2C            A5  //Analog
 
 //Definimos as variantes de controle do termostato.___________
+#define E_porta 0x68
+#define msgBegin 10
 #define debug 0
 
 //Criamos as variaveis do sistema.____________________________
+int leituraPorta[7];
 bool ligado           = true;
 bool ligado_2         = true;
 bool msgPersonalizada = false;
+String readString;
 
 //Informacoes de endereco IP, gateway, mascara de rede________
 byte mac    [] = { 0xA4, 0x28, 0x72, 0xCA, 0x55, 0x2F };
@@ -56,32 +57,29 @@ byte subnet [] = { 255, 255, 255, 0 };
 EthernetServer server(80);
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
-#define E_porta 0x68
-int leituraPorta[7];
-
 void setup() {
 #if debug == 1
   Serial.begin(9600);
 #endif
 
   //Inicializa Ethernet Shield
-  Ethernet.begin(mac, ip, gateway, subnet);
-  server.begin();
-
-  inicia_Rele(pino_rele1);
-  inicia_Rele(pino_rele2);
-
-  //Desliga os dois reles
-  estado_Rele(pino_rele1, HIGH);
-  estado_Rele(pino_rele2, HIGH);
+  Ethernet.begin(mac, ip, gateway, subnet); //Inicializa a Ethernet-shield.
+  server.begin();                           //Inicializa o object server da Ethernet-shield.
+  inicia_GY521_MPU6050(E_porta);            //Inicializa o sensor Giroscopio.
+  lcd.begin (16, 2);                        //Inicializa o display LCD.
+  inicia_Rele(pino_rele1);                  //Inicializa o rele 1.
+  inicia_Rele(pino_rele2);                  //Inicializa o rele 2.
 
 #if debug == 1
   Serial.println("Guarabots - Automacao Residencial");
   Serial.println("Iniciado com sucesso!!!");
 #endif
-  lcd.begin (16, 2);
-  inicia_GY521_MPU6050(E_porta);
 
+  //Desliga os dois reles
+  estado_Rele(pino_rele1, HIGH);
+  estado_Rele(pino_rele2, HIGH);
+
+  //Imprime a logo da equipe no LCD. 
   lcd.setBacklight(HIGH);
   lcd.setCursor(3, 0);
   lcd.print("GuaraBots");
@@ -102,46 +100,11 @@ void loop() {
           readString += c;
         }
         
-        if (c == 'n') {
-          //Liga o Rele 1___________________________________
-          if (readString.indexOf("?ligar") > 0) {
-            estado_Rele(pino_rele1, LOW);
-            ligado = false;
-          }
-          else {
-            //Desliga o Rele 1______________________________
-            if (readString.indexOf("?desligar") > 0) {
-              estado_Rele(pino_rele1, HIGH);
-              ligado = true;
-            }
-          }
-
-          //Liga o Rele 2___________________________________
-          if (readString.indexOf("?2_ligar") > 0) {
-            estado_Rele(pino_rele2, LOW);
-            ligado_2 = false;
-          }
-          else {
-            //Desliga o Rele 2______________________________
-            if (readString.indexOf("?2_desligar") > 0) {
-              estado_Rele(pino_rele2, HIGH);
-              ligado_2 = true;
-            }
-          }
-
-          //Imprime msg na tela___________________________________
-          if (readString.indexOf("msg=") > 0) {
-            lcd.clear();
-            String reciveMensage;
-            int i = 10;
-            while(readString[i] != ' '){
-                reciveMensage += readString[i];
-                i++;
-            }
-            lcd.print(reciveMensage); 
-            msgPersonalizada = true;
-          }
-          
+        controle_RELE();
+        controle_LCD();
+        obtemDados_GY521_MPU6050(leituraPorta, E_porta);
+        
+        if (c == 'n') {    
           #if debug == 1
             Serial.println(readString);
           #endif
@@ -176,19 +139,5 @@ void loop() {
         }
       }
     }
-  }
-
-
-  obtemDados_GY521_MPU6050(leituraPorta, E_porta);
-
-  if(!msgPersonalizada){
-    lcd.setBacklight(HIGH);
-    lcd.setCursor(3, 0);
-    lcd.print("GuaraBots");
-    lcd.setCursor(1, 1);
-  
-    lcd.print("temp: ");
-    lcd.print(leituraPorta[3] / 340.00 + 36.53);
-    lcd.print("C");
   }
 }
