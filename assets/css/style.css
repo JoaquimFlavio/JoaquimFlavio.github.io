@@ -1,0 +1,125 @@
+#container {
+  display: inline-block;
+  position: relative;
+    margin: 0px;
+}
+
+#container figcaption {
+  position: absolute;
+  top: 145px;
+  left: 40%;
+  font-size: 40px;
+  color: white;
+  text-shadow: 0px 0px 5px black;
+}
+
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    color: #333;
+}
+
+#logo {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+}
+
+nav a {
+    display: block;
+    padding: 10px 0px;
+    color: rgb(31, 162, 96);
+    text-decoration: none;
+}
+
+/*--------------------------------------------------------------------------------------*/
+
+main section {
+    color: white;
+    text-shadow: 1px 1px 2px #333;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+main section:nth-child(odd) {
+    color: #FFF;
+}
+
+main section {
+    background-size: cover;
+    
+    color: white;
+    text-shadow: 1px 1px 2px #333;
+    
+    padding: 25%;
+}
+
+
+main section:nth-child(1) {
+    background-image: url("./../img/23926667_1987615238147043_6816513690062384728_o.jpg");
+}
+
+main section:nth-child(2) {
+    background-image: url("./../img/22861417_1974565986118635_702300170556086512_o.jpg");
+}
+
+main section:nth-child(3) {
+    background-image: url("./../img/23519158_1981208055454428_3716572858661374957_n.jpg");
+}
+
+main section:nth-child(4) {
+    background-image: url("./../img/23472946_1981207918787775_3594914717365666436_n.jpg");
+}
+
+main section:nth-child(5) {
+    background-image: url("./../img/15202705_1810282239213678_2381595521655667296_n.png");
+}
+
+
+.Contato section:nth-child(1) {
+    background-image: url("./../img/logo_face.png");
+}
+.Contato section:nth-child(2) {
+    background-image: url("./../img/WordPress-logotype-simplified.png");
+}
+.Contato section:nth-child(3) {
+    background-image: url("./../img/logo_insta.png");
+}
+.Contato section:nth-child(4) {
+    background-image: url("./../img/logo_twiter.png");
+}
+
+
+
+
+/*--------------------------------------------------------------------------------------*/
+
+footer section:nth-child(1) {
+    background-color: rgb(13, 68, 41);
+    height: 180px;
+}
+
+footer section:nth-child(2) {
+    background-color: rgb(8, 46, 28);
+    height: 60px;    
+    color: #F5F5F5;
+}
+
+footer a, main a {
+    color: #F5F5F5;
+    text-decoration: none;
+}
+
+@media screen and (min-width: 640px) {
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
