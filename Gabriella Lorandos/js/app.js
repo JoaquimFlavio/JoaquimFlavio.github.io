@@ -32,6 +32,10 @@ botao_busca.addEventListener('click', function(){
         
         document.querySelector('#feriados').innerHTML = '';
         
+        if(dados.data = ''){
+            document.querySelector('#feriados').innerHTML = 'sem resultados';
+        }
+        
         for(feriado of dados.data.response.holidays) {
 
             let caixaDeFeriado = `
