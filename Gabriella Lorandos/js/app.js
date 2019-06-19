@@ -28,13 +28,13 @@ botao_busca.addEventListener('click', function(){
     axios.get('https://calendarific.com/api/v2/holidays?api_key=55dac0eaf2bed4054ae3f56d90394afdbb9fcd5ef7b9c9ac8b4fa94bc5e5d75f&country=BR&year='+campo_ano.value+parametros)
     .then(dados => {
         
+        if(dados.data.response.holidays == ''){
+           document.querySelector('#feriados').innerHTML = 'sem resultados';
+        }else{
+        
         console.log(dados.data);
         
         document.querySelector('#feriados').innerHTML = '';
-        
-        if(dados.data = ''){
-            document.querySelector('#feriados').innerHTML = 'sem resultados';
-        }
         
         for(feriado of dados.data.response.holidays) {
 
@@ -54,6 +54,7 @@ botao_busca.addEventListener('click', function(){
                 </div>`;
 
             document.querySelector('#feriados').innerHTML += caixaDeFeriado;
+        }
         }
     })
     .catch(resposta => {
