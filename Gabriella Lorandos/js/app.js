@@ -29,7 +29,10 @@ botao_busca.addEventListener('click', function(){
     .then(dados => {
         
         if(dados.data.response.holidays == ''){
-           document.querySelector('#feriados').innerHTML = 'sem resultados';
+           document.querySelector('#feriados').innerHTML = `
+            <div class="alert alert-danger" role="alert">
+                Nenhum resultado encontrado para esses filtros!
+            </div>`;
         }else{
         
         console.log(dados.data);
