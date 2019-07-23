@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Dias sem aulas</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/business-frontpage.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Dias sem aulas</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-warning py-5 mb-5">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-lg-12">
+          <h1 class="display-4 text-white mt-5 mb-2">Dias sem aulas</h1>
+          <p class="lead mb-5 text-white-50">Esse sistema tem como propósito exibir os feriados brasileiros no decorrer do ano. Aqui você poderá filtrar os feriados por dia, mês, ano e tipo de feriado!</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-5">
+        <h2>Filtre o seu feriado.</h2>
+        <hr>
+          <form>
+            <div class="row">
+                <div class="col">
+                    <label for="campo_dia">Dia</label>
+                    <input type="number" class="form-control" value="0" id="campo_dia">
+                </div>
+                <div class="col">
+                    <label for="campo_mes">Mês</label>
+                    <select class="form-control" id="campo_mes">
+                        <option>Desabilitar</option>
+                        <option>Janeiro</option>
+                        <option>Fevereiro</option>
+                        <option>Março</option>
+                        <option>Abril</option>
+                        <option>Maio</option>
+                        <option>Junho</option>
+                        <option>Julho</option>
+                        <option>Agosto</option>
+                        <option>Setembro</option>
+                        <option>Outubro</option>
+                        <option>Novembro</option>
+                        <option>Dezembro</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="campo_ano">Ano</label>
+                    <input type="number" class="form-control" value="2019" id="campo_ano">
+                </div>
+                <div class="col">
+                    <label for="campo_tipo">Tipo de feriado</label>
+                    <select class="form-control" id="campo_tipo">
+                        <option>Desabilitar</option>
+                        <option>national</option>
+                        <option>local</option>
+                        <option>religious</option>
+                        <option>observance</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <center></center>
+                    <input id="botao_busca" class="btn btn-primary" type="button" value="Submit">
+                </div>
+            </div>
+        </form>
+      </div>
+    </div><!-- /.row -->
+
+      
+    <div class="row" id="feriados">
+      
+        <!--<<div class="col-md-4 mb-5">
+        <div class="card h-100">
+          <div class="card-header">
+              21/10/1999
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Card title</h4>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque sequi doloribus.</p>  
+          </div>
+        </div>
+      </div>-->
+        
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
